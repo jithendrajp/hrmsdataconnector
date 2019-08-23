@@ -68,6 +68,15 @@ namespace iCuboid.HRMS.DataConnector.Models
                 data.name = value;
             }
         }
+        public IList<TimeSheetLog> time_logs
+        {
+            get { return data.time_logs; }
+
+            set
+            {
+                data.time_logs = value;
+            }
+        }
         public string creation
         {
             get { return data.creation; }
@@ -84,6 +93,13 @@ namespace iCuboid.HRMS.DataConnector.Models
                 data.modified = DateTime.Now;
             }
         }
-        
+        public int docstatus
+        {
+            get { return data.docstatus; }
+            set
+            {
+                data.docstatus = value;
+            }
+        }
     }
 }

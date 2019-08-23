@@ -1,4 +1,5 @@
-﻿using System;
+﻿using iCuboid.HRMS.DataConnector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -14,14 +15,12 @@ namespace iCuboid.HRMS.SchedulerService
         /// </summary>
         static void Main()
         {
-
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
                 new HrmsSchedulerService()
             };
             ServiceBase.Run(ServicesToRun);
-
         }
     }
 }

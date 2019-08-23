@@ -91,5 +91,14 @@ namespace iCuboid.HRMS.DataConnector.Models
             get { return parseEnum<AttendanceStatusEnum>(data.status); }
             set { data.status = value.ToString(); }
         }
+
+        public int docstatus
+        {
+            get { return data.docstatus; }
+            set
+            {
+                data.docstatus = value;
+            }
+        }
     }
 }

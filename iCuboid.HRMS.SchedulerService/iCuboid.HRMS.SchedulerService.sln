@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iCuboid.HRMS.SchedulerService", "iCuboid.HRMS.SchedulerService.csproj", "{4A3BF967-1AD4-450B-8263-C065D68A8FA5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4DBA1FD5-67E1-476C-AF3F-898651EE3A45} = {4DBA1FD5-67E1-476C-AF3F-898651EE3A45}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iCuboid.HRMS.DataConnector", "..\iCuboid.HRMS.DataConnector\iCuboid.HRMS.DataConnector.csproj", "{4DBA1FD5-67E1-476C-AF3F-898651EE3A45}"
 EndProject

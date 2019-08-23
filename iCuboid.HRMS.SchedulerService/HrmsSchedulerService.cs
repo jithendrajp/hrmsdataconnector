@@ -1,6 +1,7 @@
 ﻿using iCuboid.HRMS.DataConnector;
 using log4net;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Timers;
@@ -15,9 +16,6 @@ namespace iCuboid.HRMS.SchedulerService
         public HrmsSchedulerService()
         {
             InitializeComponent();
-            _timer = new Timer();
-            // Schedule to run once a day at 1:00 a.m.
-            _scheduleTime = DateTime.Today.AddDays(0).AddHours(14).AddMinutes(35);
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
@@ -26,6 +24,11 @@ namespace iCuboid.HRMS.SchedulerService
             try
             {
                 Log.Info("Service starting");
+                _timer = new Timer();
+                // Read Scheduletime  for run from appsettings.
+                var servicerunningtime = ConfigurationManager.AppSettings["SchedulerStartTime"].ToString();
+                _scheduleTime = DateTime.Parse(servicerunningtime);
+
                 _timer.Enabled = true;
                 //Test if its a time in the past and protect setting _timer.Interval with a negative number which causes an error.
                 double tillNextInterval = _scheduleTime.Subtract(DateTime.Now).TotalSeconds * 1000;

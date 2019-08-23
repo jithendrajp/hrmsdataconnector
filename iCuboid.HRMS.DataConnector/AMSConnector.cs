@@ -61,21 +61,27 @@ namespace iCuboid.HRMS.DataConnector
             {
 
                 //Get the Last updated date of this employee
-                LastProcessedDate = await HrmsConnector.CheckTheLastUpdatedAttendance(emp.EmpID);
-                ProcessingDate = LastProcessedDate.AddDays(1);
-
-                if (LastProcessedDate != DateTime.MinValue && ProcessingDate.Date != DateTime.Now.Date)
+                if (emp.EmpID != null)
                 {
-                    string sql = $"select min(dt) as CheckIn,max(dt) as CheckOut,empname  from [netxs].[dbo].[Trans] where EmpID='{emp.EmpID}' and CAST(dt as date) = CAST('{ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)}' as date)  group by EmpID,empname";
-                    command = new SqlCommand(sql, connection);
-                    dataReader = command.ExecuteReader();
-                    while (dataReader.Read())
+                    LastProcessedDate = await HrmsConnector.CheckTheLastUpdatedAttendance(emp.EmpID);
+                    ProcessingDate = LastProcessedDate.AddDays(1);
+
+                    if (LastProcessedDate != DateTime.MinValue && ProcessingDate.Date != DateTime.Now.Date)
                     {
-                        ProcessingDayCheckIn = (DateTime)dataReader.GetValue(0);
-                        ProcessingDayCheckOut = (DateTime)dataReader.GetValue(1);
-                        EmployeName = (string)dataReader.GetValue(2);
+                        while (ProcessingDate.Date < DateTime.Now.Date)
+                        {
+                            string sql = $"select min(dt) as CheckIn,max(dt) as CheckOut,empname  from [netxs].[dbo].[Trans] where EmpID='{emp.EmpID}' and CAST(dt as date) = CAST('{ProcessingDate.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)}' as date)  group by EmpID,empname";
+                            command = new SqlCommand(sql, connection);
+                            dataReader = command.ExecuteReader();
+                            while (dataReader.Read())
+                            {
+                                ProcessingDayCheckIn = (DateTime)dataReader.GetValue(0);
+                                ProcessingDayCheckOut = (DateTime)dataReader.GetValue(1);
+                            }
+                            await HrmsConnector.UpdateAttendance(ProcessingDate, ProcessingDayCheckIn, ProcessingDayCheckOut, emp.EmpID);
+                            ProcessingDate = ProcessingDate.AddDays(1);
+                        }
                     }
-                    await HrmsConnector.UpdateAttendance(ProcessingDate, ProcessingDayCheckIn, ProcessingDayCheckOut, emp.EmpID, EmployeName);
                 }
             }
         }

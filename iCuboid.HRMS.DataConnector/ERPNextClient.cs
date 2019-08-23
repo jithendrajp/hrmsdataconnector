@@ -71,6 +71,12 @@ namespace iCuboid.HRMS.DataConnector
             }
 
             var response = this.client.Execute(request);
+            var b = response.Cookies;
+            var sessionCookie = response.Cookies.SingleOrDefault(x => x.Name == "sid");
+            if (sessionCookie != null)
+            {
+                this.client.CookieContainer.Add(new Cookie(sessionCookie.Name, sessionCookie.Value, sessionCookie.Path, sessionCookie.Domain));
+            }
             assertResponseIsOK(response);
 
             return parseDynamic(response);
@@ -80,7 +86,7 @@ namespace iCuboid.HRMS.DataConnector
         {
             this._username = username;
             this._password = password;
-            this.client.CookieContainer = new CookieContainer();
+            //this.client.CookieContainer = new CookieContainer();
 
             loginIfNeeded();
         }
@@ -94,7 +100,7 @@ namespace iCuboid.HRMS.DataConnector
                 if (session_cookie != null)
                 {
                     bool is_cookie_active = DateTime.Now < session_cookie.Expires;
-                    return is_cookie_active;
+                    return true;
                 }
                 return false;
             }

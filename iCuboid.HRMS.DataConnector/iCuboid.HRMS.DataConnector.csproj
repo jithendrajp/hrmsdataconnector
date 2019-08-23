@@ -54,6 +54,7 @@
     <Compile Include="AMSConnector.cs" />
     <Compile Include="Enums\LeaveEnum.cs" />
     <Compile Include="Models\ERPTimesheet.cs" />
+    <Compile Include="Models\TimeSheetLog.cs" />
     <Compile Include="PublicTypes\ERPFilter.cs" />
     <Compile Include="InternalTypes\DocRawList.cs" />
     <Compile Include="PublicTypes\DocType.cs" />
